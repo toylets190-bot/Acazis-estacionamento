@@ -4,406 +4,381 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- SEO e Metadados -->
-    <title>Acazis OS | Gestão de Estética Automotiva e Estacionamento</title>
-    <meta name="description" content="Sistema inteligente para acompanhamento de lavagem e estacionamento. Consulte seu ticket online na Acazis Lavalava.">
-    <meta name="author" content="Acazis Tech">
-
+    <!-- SEO e Metatags -->
+    <title>Acazis OS | Gestão Profissional de Estacionamento</title>
+    <meta name="description" content="Registre e rastreie seu estacionamento online em poucos segundos.">
+    
     <!-- Frameworks e Fontes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #2563eb; --navy: #0f172a; }
+        :root { --primary: #4f46e5; --navy: #0f172a; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: var(--navy); -webkit-tap-highlight-color: transparent; }
         
-        /* Menu Fixo e Vidro */
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
         
-        /* Animações */
-        .screen { display: none; }
+        .screen { display: none; padding-top: 5rem; padding-bottom: 7rem; }
         .screen.active { display: block; animation: slideUp 0.4s ease-out; }
+        
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Estilo dos Cards */
-        .card-shadow { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
-        .btn-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-hover:active { transform: scale(0.96); }
+        .card-pro { background: white; border-radius: 1.5rem; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.2s; }
+        .card-pro:active { transform: scale(0.98); }
 
-        /* Placeholder para celulares */
-        input::placeholder { color: #94a3b8; font-size: 0.9rem; }
+        .btn-main { background: var(--primary); color: white; border-radius: 1rem; font-weight: 700; transition: all 0.3s; width: 100%; padding: 1rem; text-align: center; display: block; }
+        .btn-main:active { transform: scale(0.95); opacity: 0.9; }
+
+        input, select { width: 100%; padding: 1rem; border-radius: 1rem; background: #f1f5f9; border: 2px solid transparent; transition: 0.3s; }
+        input:focus { border-color: var(--primary); background: white; outline: none; }
+
+        .nav-item.active { color: var(--primary); font-weight: 800; }
+        .nav-item.active i { transform: translateY(-4px); transition: 0.3s; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- HEADER / NAVEGAÇÃO FIXA -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass">
-        <div class="max-w-md mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <i data-lucide="zap" class="text-white w-5 h-5"></i>
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-lg leading-none tracking-tight">Acazis<span class="text-blue-600">OS</span></h1>
-                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sistema de Gestão</span>
-                </div>
+    <!-- HEADER / LOGO (CLAREZA DE MARCA) -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                <i data-lucide="shield-check" class="text-white w-5 h-5"></i>
             </div>
-            <button onclick="window.accessAdmin()" class="p-2.5 rounded-xl bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                <i data-lucide="lock" class="w-5 h-5"></i>
-            </button>
+            <h1 class="font-extrabold text-xl tracking-tight leading-none">Acazis<span class="text-indigo-600">OS</span></h1>
         </div>
+        <button onclick="window.handleAdminAccess()" class="p-2.5 rounded-xl bg-slate-100 text-slate-400 active:text-indigo-600 transition-colors">
+            <i data-lucide="lock" class="w-5 h-5"></i>
+        </button>
     </header>
 
-    <main class="max-w-md mx-auto pt-24 px-6 pb-32">
+    <main class="max-w-md mx-auto px-5">
 
-        <!-- [CLIENTE] TELA HOME -->
+        <!-- [TELA 1] HOME - FOCO NO PROPÓSITO -->
         <section id="scr-home" class="screen active space-y-8">
-            <!-- HERO COM PROPÓSITO CLARO -->
-            <div class="space-y-3">
+            <div class="space-y-4 text-center mt-4">
                 <h2 class="text-3xl font-extrabold leading-tight text-slate-900">
-                    Estacione seu veículo e consulte seu ticket online.
+                    Registre e rastreie seu <span class="text-indigo-600">veículo online</span> em poucos segundos.
                 </h2>
-                <p class="text-slate-500 leading-relaxed text-sm">
-                    Bem-vindo à <span class="font-semibold text-blue-600">Acazis Lavalava</span>. Aqui você acompanha em tempo real o status da sua lavagem ou permanência.
+                <p class="text-slate-500 text-sm px-4">
+                    Gerencie seu estacionamento de forma inteligente. Consulte o status da sua lavagem ou vaga agora mesmo.
                 </p>
             </div>
 
-            <!-- BOTÕES DE AÇÃO RÁPIDA -->
+            <!-- CARDS DE INSTRUÇÃO E AÇÃO -->
             <div class="grid grid-cols-1 gap-4">
-                <button onclick="switchScreen('track')" class="btn-hover bg-blue-600 text-white p-5 rounded-2xl font-bold flex items-center justify-between shadow-xl shadow-blue-100">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="search" class="w-6 h-6"></i>
-                        <div class="text-left">
-                            <span class="block">Rastrear meu ticket agora</span>
-                            <span class="text-[10px] opacity-70 font-normal">Saiba se o seu veículo já está pronto</span>
-                        </div>
+                <div onclick="window.switchScreen('track')" class="card-pro p-6 flex items-center gap-4 cursor-pointer">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="search" class="w-8 h-8"></i>
                     </div>
-                    <i data-lucide="chevron-right" class="w-5 h-5 opacity-50"></i>
-                </button>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="switchScreen('prices')" class="btn-hover bg-white border border-slate-200 p-5 rounded-2xl font-bold text-slate-700 flex flex-col items-center gap-2 card-shadow">
-                        <i data-lucide="list-checks" class="text-blue-600"></i>
-                        <span class="text-xs">Preços</span>
-                    </button>
-                    <button onclick="window.open('https://wa.me/5511999999999')" class="btn-hover bg-white border border-slate-200 p-5 rounded-2xl font-bold text-slate-700 flex flex-col items-center gap-2 card-shadow">
-                        <i data-lucide="message-circle" class="text-green-500"></i>
-                        <span class="text-xs">WhatsApp</span>
-                    </button>
+                    <div>
+                        <h3 class="font-bold text-lg">Buscar Status</h3>
+                        <p class="text-xs text-slate-400 uppercase font-black tracking-widest">Acesso Cliente</p>
+                    </div>
+                </div>
+
+                <div onclick="window.switchScreen('prices')" class="card-pro p-6 flex items-center gap-4 cursor-pointer">
+                    <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
+                        <i data-lucide="list-checks" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Tabela de Preços</h3>
+                        <p class="text-xs text-slate-400 uppercase font-black tracking-widest">Valores Vigentes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RODAPÉ DE CONTATO -->
+            <div class="text-center pt-10 border-t border-slate-100">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Contato & Suporte</p>
+                <div class="flex justify-center gap-4">
+                    <button class="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-green-500"><i data-lucide="message-circle"></i></button>
+                    <button class="p-3 bg-white border border-slate-100 rounded-2xl shadow-sm text-indigo-500"><i data-lucide="map-pin"></i></button>
                 </div>
             </div>
         </section>
 
-        <!-- [CLIENTE] TELA RASTREIO -->
+        <!-- [TELA 2] RASTREIO - FUNCIONALIDADE REAL -->
         <section id="scr-track" class="screen space-y-6">
-            <div class="bg-white p-6 rounded-[2rem] card-shadow border border-slate-100 space-y-6">
-                <div class="text-center space-y-2">
-                    <h2 class="text-xl font-bold">Localizar Veículo</h2>
-                    <p class="text-xs text-slate-400">Digite o código de 6 dígitos que você recebeu na entrada.</p>
+            <div class="card-pro p-8 text-center space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold">Consultar Ticket</h3>
+                    <p class="text-xs text-slate-400 mt-1">Digite o código ou a placa do veículo para verificar.</p>
                 </div>
-                <div class="space-y-4">
-                    <input type="text" id="ipt-track" placeholder="EX: ACZ-123" class="w-full text-center font-black text-2xl uppercase tracking-widest text-blue-600 focus:ring-2 focus:ring-blue-100 transition-all">
-                    <button onclick="trackCar()" class="w-full btn-hover bg-blue-600 text-white py-4 rounded-xl font-bold shadow-lg">BUSCAR STATUS</button>
-                </div>
+                <input type="text" id="ipt-track" placeholder="EX: ACZ-123" class="text-center font-black text-2xl uppercase tracking-widest">
+                <button onclick="window.trackCar()" class="btn-main shadow-xl shadow-indigo-100">PESQUISAR AGORA</button>
             </div>
-            <div id="track-result"></div>
+            
+            <!-- RESULTADO DA BUSCA (FEEDBACK VISUAL) -->
+            <div id="track-result" class="animate-slideUp"></div>
         </section>
 
-        <!-- [CLIENTE] TELA SERVIÇOS -->
-        <section id="scr-prices" class="screen space-y-6">
-            <h2 class="text-2xl font-extrabold px-2">Serviços & Preços</h2>
-            <div id="service-list-client" class="space-y-3">
-                <!-- Preenchido via JS -->
-            </div>
-        </section>
-
-        <!-- [ADMIN] PAINEL MASTER -->
+        <!-- [TELA 3] ADMIN - PAINEL REAL -->
         <section id="scr-admin" class="screen space-y-6">
             <div class="flex justify-between items-center px-1">
                 <h2 class="text-2xl font-extrabold">Painel Master</h2>
-                <button onclick="logoutAdmin()" class="text-red-500 font-bold text-xs uppercase tracking-wider">Deslogar</button>
+                <button onclick="window.logoutAdmin()" class="text-red-500 font-bold text-xs uppercase tracking-widest">Sair</button>
             </div>
 
-            <!-- RESUMO FINANCEIRO -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-slate-900 p-5 rounded-3xl text-white">
-                    <p class="text-[9px] font-bold uppercase text-slate-500 mb-1">Caixa Hoje</p>
-                    <h3 id="adm-cash" class="text-xl font-black">R$ 0,00</h3>
+            <!-- STATS RÁPIDOS -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card-pro p-5 bg-navy text-white" style="background-color: var(--navy);">
+                    <p class="text-[10px] font-bold uppercase opacity-50">Caixa Hoje</p>
+                    <h4 id="adm-cash" class="text-xl font-black">R$ 0,00</h4>
                 </div>
-                <div class="bg-white p-5 rounded-3xl border border-slate-100 card-shadow">
-                    <p class="text-[9px] font-bold uppercase text-slate-400 mb-1">No Pátio</p>
-                    <h3 id="adm-count" class="text-xl font-black text-blue-600">0</h3>
+                <div class="card-pro p-5 border-l-4 border-indigo-600">
+                    <p class="text-[10px] font-bold uppercase text-slate-400">Ativos</p>
+                    <h4 id="adm-count" class="text-xl font-black">0</h4>
                 </div>
             </div>
 
-            <!-- CONFIGURAÇÕES DE PREÇO (EDITÁVEL) -->
-            <div class="bg-white p-6 rounded-[2rem] card-shadow space-y-4">
-                <h4 class="text-xs font-black uppercase text-slate-400 flex items-center gap-2">
-                    <i data-lucide="settings-2" class="w-4 h-4"></i> Gerenciar Serviços
-                </h4>
-                <div id="adm-service-editor" class="space-y-2"></div>
-                <button onclick="addNewService()" class="w-full py-3 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold border border-dashed border-slate-200">+ Novo Serviço</button>
-            </div>
-
-            <!-- REGISTRAR ENTRADA -->
-            <div class="bg-blue-600 p-6 rounded-[2rem] text-white space-y-4 shadow-xl shadow-blue-100">
-                <h4 class="text-xs font-bold uppercase opacity-70 italic">Nova Entrada de Veículo</h4>
-                <div class="space-y-3">
-                    <input type="text" id="in-plate" placeholder="Placa (ABC-1234)" class="bg-white/10 border-white/20 text-white placeholder:text-white/40 font-bold uppercase">
-                    <input type="text" id="in-model" placeholder="Modelo / Cor" class="bg-white/10 border-white/20 text-white placeholder:text-white/40 font-bold">
-                    <select id="in-service-select" class="bg-white/10 border-white/20 text-white font-bold text-sm"></select>
+            <!-- FORMULÁRIO DE ENTRADA (FUNCIONAL) -->
+            <div class="card-pro p-6 space-y-4">
+                <h4 class="font-bold text-sm uppercase tracking-widest text-slate-400">Registrar Entrada</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="adm-plate" placeholder="Placa" class="font-bold uppercase tracking-widest">
+                    <input type="text" id="adm-model" placeholder="Modelo">
                 </div>
-                <button onclick="registerVehicle()" class="w-full py-4 bg-white text-blue-600 rounded-xl font-black btn-hover">CADASTRAR ENTRADA</button>
+                <select id="adm-service" class="font-bold text-xs">
+                    <option value="Lavagem Simples" data-price="35">Lavagem Simples - R$ 35</option>
+                    <option value="Lavagem Completa" data-price="60">Lavagem Completa - R$ 60</option>
+                    <option value="Estacionamento" data-price="15">Estacionamento Hora - R$ 15</option>
+                </select>
+                <button onclick="window.registerEntry()" class="btn-main">GERAR TICKET AGORA</button>
             </div>
 
-            <div id="adm-active-list" class="space-y-3"></div>
+            <!-- LISTA DE CARROS NO PÁTIO -->
+            <div id="adm-active-list" class="space-y-4"></div>
+        </section>
+
+        <!-- [TELA 4] TABELA DE PREÇOS -->
+        <section id="scr-prices" class="screen space-y-6">
+            <h2 class="text-2xl font-extrabold px-1">Tabela de Serviços</h2>
+            <div class="space-y-3">
+                <div class="card-pro p-5 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="droplet" class="text-blue-500"></i>
+                        <span class="font-bold">Lavagem Simples</span>
+                    </div>
+                    <span class="font-black text-indigo-600">R$ 35,00</span>
+                </div>
+                <div class="card-pro p-5 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="sparkles" class="text-indigo-500"></i>
+                        <span class="font-bold">Lavagem Completa</span>
+                    </div>
+                    <span class="font-black text-indigo-600">R$ 60,00</span>
+                </div>
+                <div class="card-pro p-5 flex justify-between items-center border-dashed">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="clock" class="text-slate-400"></i>
+                        <span class="font-bold">Estacionamento / Hora</span>
+                    </div>
+                    <span class="font-black text-indigo-600">R$ 15,00</span>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <!-- NAVEGAÇÃO INFERIOR FIXA -->
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[2.2rem] shadow-2xl z-50 flex justify-around items-center px-4 border border-slate-200">
-        <button onclick="switchScreen('home')" class="nav-item active flex flex-col items-center gap-1 text-slate-400 transition-all">
+    <!-- NAVEGAÇÃO INFERIOR FIXA (MOBILE) -->
+    <nav class="fixed bottom-0 left-0 right-0 h-20 glass flex justify-around items-center px-4 z-50">
+        <button onclick="window.switchScreen('home')" class="nav-item active flex flex-col items-center gap-1 text-slate-400 transition-all">
             <i data-lucide="home" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase tracking-tighter">Início</span>
+            <span class="text-[10px] font-bold uppercase tracking-tighter">Início</span>
         </button>
-        <button onclick="switchScreen('track')" class="nav-item flex flex-col items-center gap-1 text-slate-400 transition-all">
+        <button onclick="window.switchScreen('track')" class="nav-item flex flex-col items-center gap-1 text-slate-400 transition-all">
             <i data-lucide="search" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase tracking-tighter">Rastrear</span>
+            <span class="text-[10px] font-bold uppercase tracking-tighter">Rastrear</span>
         </button>
-        <button onclick="switchScreen('prices')" class="nav-item flex flex-col items-center gap-1 text-slate-400 transition-all">
+        <button onclick="window.switchScreen('prices')" class="nav-item flex flex-col items-center gap-1 text-slate-400 transition-all">
             <i data-lucide="list-checks" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase tracking-tighter">Preços</span>
+            <span class="text-[10px] font-bold uppercase tracking-tighter">Preços</span>
         </button>
     </nav>
 
     <script>
-        // --- MOTOR DE DADOS (ESTADO CENTRAL) ---
-        let state = JSON.parse(localStorage.getItem('acazis_db')) || {
-            vehicles: [],
+        // --- MOTOR DE DADOS DO SISTEMA ---
+        let state = JSON.parse(localStorage.getItem('acz_titanium_db')) || {
+            active: [],
             history: [],
-            services: [
-                { id: 1, name: 'Lavagem Simples', price: 35 },
-                { id: 2, name: 'Lavagem Completa', price: 60 },
-                { id: 3, name: 'Estacionamento (Hora)', price: 15 }
-            ],
             isAdmin: false
         };
 
         function save() {
-            localStorage.setItem('acazis_db', JSON.stringify(state));
+            localStorage.setItem('acz_titanium_db', JSON.stringify(state));
             renderAll();
         }
 
-        // --- NAVEGAÇÃO ---
-        function switchScreen(id) {
+        // --- NAVEGAÇÃO E UX ---
+        window.switchScreen = (id) => {
+            if(id === 'admin' && !state.isAdmin) return window.handleAdminAccess();
+
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('scr-' + id).classList.add('active');
             
-            document.querySelectorAll('.nav-item').forEach(n => {
-                n.classList.remove('text-blue-600');
-                n.classList.add('text-slate-400');
-            });
-            const btn = document.querySelector(`[onclick="switchScreen('${id}')"]`);
-            if(btn) btn.classList.add('text-blue-600');
+            // Estilo do Menu
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active', 'text-indigo-600'));
+            const btn = document.querySelector(`[onclick="window.switchScreen('${id}')"]`);
+            if(btn) btn.classList.add('active');
             
-            lucide.createIcons();
             window.scrollTo(0,0);
-        }
+            lucide.createIcons();
+        };
 
-        // --- SEGURANÇA ADMIN ---
-        async function accessAdmin() {
-            if(state.isAdmin) return switchScreen('admin');
+        // --- SEGURANÇA E ADMIN ---
+        window.handleAdminAccess = async () => {
             const { value: pass } = await Swal.fire({
                 title: 'Acesso Restrito',
-                text: 'Digite a senha do Painel Master',
                 input: 'password',
-                confirmButtonColor: '#2563eb',
-                inputPlaceholder: 'Senha'
+                confirmButtonColor: '#4f46e5',
+                inputPlaceholder: 'Senha do Painel Master'
             });
+
             if(pass === '1234321') {
                 state.isAdmin = true;
-                switchScreen('admin');
+                Swal.fire({ icon: 'success', title: 'Painel Desbloqueado', timer: 1000, showConfirmButton: false });
+                window.switchScreen('admin');
             } else if(pass) {
                 Swal.fire('Erro', 'Senha incorreta', 'error');
             }
-        }
+        };
 
-        function logoutAdmin() {
+        window.logoutAdmin = () => {
             state.isAdmin = false;
-            switchScreen('home');
-        }
+            window.switchScreen('home');
+        };
 
-        // --- OPERAÇÕES ---
-        function registerVehicle() {
-            const plate = document.getElementById('in-plate').value.trim().toUpperCase();
-            const model = document.getElementById('in-model').value.trim();
-            const serviceId = document.getElementById('in-service-select').value;
-            const service = state.services.find(s => s.id == serviceId);
+        // --- OPERAÇÕES (REGISTRAR/BUSCAR) ---
+        window.registerEntry = () => {
+            const plate = document.getElementById('adm-plate').value.trim().toUpperCase();
+            const model = document.getElementById('adm-model').value.trim();
+            const serviceElem = document.getElementById('adm-service');
+            const service = serviceElem.value;
+            const price = parseFloat(serviceElem.options[serviceElem.selectedIndex].dataset.price);
 
-            if(!plate || !model) return Swal.fire('Oops', 'Preencha placa e modelo', 'warning');
+            if(!plate || !model) return Swal.fire('Aviso', 'Preencha placa e modelo', 'warning');
 
             const ticket = "ACZ-" + Math.floor(100 + Math.random() * 899);
             const entry = {
-                ticket, plate, model,
-                service: service.name,
-                price: service.price,
-                status: 'Aguardando',
-                time: new Date().getTime()
+                ticket, plate, model, service, price,
+                entryTime: new Date().getTime(),
+                status: 'Iniciado'
             };
 
-            state.vehicles.unshift(entry);
+            state.active.unshift(entry);
             save();
-            Swal.fire('Sucesso!', `Veículo registrado com o ticket ${ticket}`, 'success');
             
-            document.getElementById('in-plate').value = '';
-            document.getElementById('in-model').value = '';
-        }
+            Swal.fire('Sucesso!', `Entrada registrada: ${ticket}`, 'success');
+            document.getElementById('adm-plate').value = '';
+            document.getElementById('adm-model').value = '';
+        };
 
-        function trackCar() {
-            const query = document.getElementById('ipt-track').value.toUpperCase();
-            const car = state.vehicles.find(v => v.ticket === query);
+        window.trackCar = () => {
+            const query = document.getElementById('ipt-track').value.trim().toUpperCase();
+            const car = state.active.find(c => c.ticket === query || c.plate === query);
             const resDiv = document.getElementById('track-result');
 
             if(!query) return;
 
-            // Feedback visual de carregando
-            resDiv.innerHTML = `<div class="flex justify-center p-10"><div class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div></div>`;
+            // Feedback visual: Carregando
+            resDiv.innerHTML = '<div class="text-center p-10"><div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-600 border-t-transparent"></div></div>';
 
             setTimeout(() => {
                 if(!car) {
-                    resDiv.innerHTML = `<div class="bg-red-50 text-red-500 p-6 rounded-2xl font-bold text-center border border-red-100">Ticket não localizado.</div>`;
+                    resDiv.innerHTML = `<div class="bg-red-50 text-red-500 p-6 rounded-2xl font-bold text-center border border-red-100">Ticket ou Placa não localizada.</div>`;
                     return;
                 }
 
                 resDiv.innerHTML = `
-                    <div class="bg-white p-6 rounded-[2rem] card-shadow border-t-8 border-blue-600 animate-slideUp">
+                    <div class="card-pro p-8 border-t-8 border-indigo-600">
                         <div class="flex justify-between items-start mb-6">
                             <div>
-                                <h4 class="text-2xl font-black text-slate-800">${car.model}</h4>
-                                <p class="text-blue-600 font-bold uppercase text-xs tracking-widest">${car.plate}</p>
+                                <h4 class="text-2xl font-black">${car.model}</h4>
+                                <p class="text-indigo-600 font-bold uppercase text-xs tracking-widest">${car.plate}</p>
                             </div>
-                            <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">${car.status}</span>
+                            <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">${car.status}</span>
                         </div>
-                        <div class="space-y-2 border-t border-slate-50 pt-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl space-y-2">
                             <div class="flex justify-between text-xs font-bold"><span class="text-slate-400">Serviço:</span><span>${car.service}</span></div>
-                            <div class="flex justify-between text-xs font-bold"><span class="text-slate-400">Valor Total:</span><span class="text-lg text-blue-600">R$ ${car.price.toFixed(2)}</span></div>
+                            <div class="flex justify-between text-xs font-bold"><span class="text-slate-400">Entrada:</span><span>${new Date(car.entryTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></div>
                         </div>
-                        <p class="mt-4 text-[10px] text-slate-400 italic text-center">Apresente este ticket digital na recepção para retirada.</p>
+                        <p class="mt-4 text-[10px] text-slate-300 italic text-center font-bold uppercase">Apresente este ticket digital na saída.</p>
                     </div>
                 `;
+                lucide.createIcons();
             }, 600);
-        }
+        };
 
-        function updateStatus(ticket, s) {
-            const car = state.vehicles.find(v => v.ticket === ticket);
+        window.updateStatus = (ticket, s) => {
+            const car = state.active.find(c => c.ticket === ticket);
             car.status = s;
             save();
-        }
+        };
 
-        function checkout(ticket) {
-            const car = state.vehicles.find(v => v.ticket === ticket);
+        window.checkout = (ticket) => {
+            const carIndex = state.active.findIndex(c => c.ticket === ticket);
+            const car = state.active[carIndex];
+
             Swal.fire({
                 title: 'Finalizar Saída?',
-                text: `${car.plate} - Total: R$ ${car.price.toFixed(2)}`,
+                text: `Valor: R$ ${car.price.toFixed(2)}`,
+                icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Confirmar Pagamento',
-                confirmButtonColor: '#10b981'
-            }).then((res) => {
-                if(res.isConfirmed) {
+                confirmButtonColor: '#10b981',
+                confirmButtonText: 'Confirmar Pagamento'
+            }).then((result) => {
+                if (result.isConfirmed) {
                     state.history.push({...car, exitTime: new Date().getTime()});
-                    state.vehicles = state.vehicles.filter(v => v.ticket !== ticket);
+                    state.active.splice(carIndex, 1);
                     save();
+                    Swal.fire('Pago!', 'O veículo foi liberado.', 'success');
                 }
             });
-        }
-
-        // --- GESTÃO DE SERVIÇOS ---
-        function editService(id, key, val) {
-            const s = state.services.find(x => x.id === id);
-            s[key] = key === 'price' ? parseFloat(val) : val;
-            save();
-        }
-
-        function deleteService(id) {
-            state.services = state.services.filter(s => s.id !== id);
-            save();
-        }
-
-        async function addNewService() {
-            const { value: formValues } = await Swal.fire({
-                title: 'Novo Serviço',
-                html: `<input id="sw-n" class="swal2-input" placeholder="Nome do Serviço">
-                       <input id="sw-p" type="number" class="swal2-input" placeholder="Preço R$">`,
-                preConfirm: () => [document.getElementById('sw-n').value, document.getElementById('sw-p').value]
-            });
-            if (formValues && formValues[0]) {
-                state.services.push({ id: Date.now(), name: formValues[0], price: parseFloat(formValues[1]) });
-                save();
-            }
-        }
+        };
 
         // --- RENDERS ---
         function renderAll() {
-            renderActiveList();
-            renderPrices();
+            renderAdminPatio();
             updateStats();
             lucide.createIcons();
         }
 
-        function renderActiveList() {
-            const list = document.getElementById('adm-active-list');
-            list.innerHTML = state.vehicles.map(v => `
-                <div class="bg-white p-5 rounded-[1.5rem] card-shadow flex justify-between items-center border border-slate-50">
+        function renderAdminPatio() {
+            const container = document.getElementById('adm-active-list');
+            if(state.active.length === 0) {
+                container.innerHTML = `<p class="text-center py-10 text-slate-300 font-bold">Pátio Vazio</p>`;
+                return;
+            }
+
+            container.innerHTML = state.active.map(c => `
+                <div class="card-pro p-5 flex justify-between items-center border-l-4 border-indigo-600">
                     <div>
-                        <p class="text-[9px] font-black text-blue-600 uppercase">${v.ticket}</p>
-                        <h4 class="font-bold text-slate-800">${v.plate}</h4>
-                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">${v.status}</p>
+                        <p class="text-[10px] font-black text-indigo-600">${c.ticket}</p>
+                        <h4 class="font-bold text-slate-800">${c.plate}</h4>
+                        <p class="text-[9px] text-slate-400 uppercase font-black">${c.service}</p>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="updateStatus('${v.ticket}', 'Lavando')" class="p-2.5 bg-slate-50 rounded-xl text-slate-400 hover:text-blue-600"><i data-lucide="droplets" class="w-4 h-4"></i></button>
-                        <button onclick="updateStatus('${v.ticket}', 'Pronto')" class="p-2.5 bg-slate-50 rounded-xl text-slate-400 hover:text-emerald-500"><i data-lucide="check" class="w-4 h-4"></i></button>
-                        <button onclick="checkout('${v.ticket}')" class="p-2.5 bg-slate-900 text-white rounded-xl shadow-lg"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+                        <button onclick="updateStatus('${c.ticket}', 'Lavando')" class="p-2.5 bg-slate-100 rounded-xl text-slate-400 hover:text-indigo-600 transition-all"><i data-lucide="droplets" class="w-4 h-4"></i></button>
+                        <button onclick="updateStatus('${c.ticket}', 'Pronto')" class="p-2.5 bg-slate-100 rounded-xl text-slate-400 hover:text-emerald-500 transition-all"><i data-lucide="check-circle" class="w-4 h-4"></i></button>
+                        <button onclick="checkout('${c.ticket}')" class="p-2.5 bg-slate-900 text-white rounded-xl active:scale-90 transition-all"><i data-lucide="log-out" class="w-4 h-4"></i></button>
                     </div>
                 </div>
             `).join('');
-        }
-
-        function renderPrices() {
-            const clientList = document.getElementById('service-list-client');
-            const adminEditor = document.getElementById('adm-service-editor');
-            const adminSelect = document.getElementById('in-service-select');
-
-            clientList.innerHTML = state.services.map(s => `
-                <div class="bg-white p-6 rounded-3xl card-shadow flex justify-between items-center border border-slate-50">
-                    <div>
-                        <span class="font-bold text-slate-700 block">${s.name}</span>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Serviço Premium</span>
-                    </div>
-                    <span class="font-black text-blue-600">R$ ${s.price.toFixed(2)}</span>
-                </div>
-            `).join('');
-
-            adminEditor.innerHTML = state.services.map(s => `
-                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
-                    <input class="bg-transparent border-none text-xs font-bold flex-1" value="${s.name}" onchange="editService(${s.id}, 'name', this.value)">
-                    <input class="bg-transparent border-none text-xs font-black text-blue-600 w-12" type="number" value="${s.price}" onchange="editService(${s.id}, 'price', this.value)">
-                    <button onclick="deleteService(${s.id})" class="text-red-400 p-1"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
-                </div>
-            `).join('');
-
-            adminSelect.innerHTML = state.services.map(s => `<option value="${s.id}">${s.name} (R$ ${s.price})</option>`).join('');
         }
 
         function updateStats() {
-            document.getElementById('adm-count').innerText = state.vehicles.length;
-            const rev = state.history.reduce((acc, v) => acc + v.price, 0);
-            document.getElementById('adm-cash').innerText = `R$ ${rev.toFixed(2)}`;
+            const revenue = state.history.reduce((acc, curr) => acc + curr.price, 0);
+            document.getElementById('adm-cash').innerText = `R$ ${revenue.toFixed(2)}`;
+            document.getElementById('adm-count').innerText = state.active.length;
         }
 
-        window.onload = () => { lucide.createIcons(); renderAll(); };
+        // Inicializar
+        window.onload = () => {
+            init();
+        };
+
     </script>
 </body>
     </html>
