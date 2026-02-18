@@ -3,327 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acazis OS | Quantum Shield</title>
+    <title>Acazis OS | Titanium Ultra</title>
     
-    <!-- Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
-        :root { 
-            --primary: #6366f1; 
-            --primary-soft: rgba(99, 102, 241, 0.1);
-        }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #f8fafc; 
-            color: #0f172a; 
-            overflow-x: hidden; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        :root { --p: #4f46e5; --bg: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #1e293b; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        .theme-bg { background-color: var(--primary); }
-        .theme-text { color: var(--primary); }
-        .theme-border { border-color: var(--primary); }
-
-        .glass { 
-            background: rgba(255, 255, 255, 0.75); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-        }
-
-        .screen { display: none; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s; }
-        .screen.active { display: block; animation: slideUp 0.4s forwards; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .screen { display: none; transition: all 0.4s ease; }
+        .screen.active { display: block; animation: slideUp 0.3s ease-out; }
         
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(20px) scale(0.98); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { 
-            background: white; 
-            border-radius: 2rem; 
-            border: 1px solid #f1f5f9; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.02); 
-        }
-        
-        .dock-item.active { color: var(--primary); transform: translateY(-5px); }
-        .dock-item.active i { filter: drop-shadow(0 5px 10px var(--primary-soft)); }
+        .card { background: white; border-radius: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .btn-indigo { background: #4f46e5; color: white; border-radius: 1rem; transition: all 0.2s; }
+        .btn-indigo:active { transform: scale(0.96); }
 
-        input, select, textarea { 
-            border-radius: 1.2rem; 
-            padding: 1rem; 
-            background: #f1f5f9; 
-            border: 2px solid transparent; 
-            transition: all 0.3s; 
-            width: 100%;
-            font-size: 14px;
-        }
-        input:focus { border-color: var(--primary); background: white; outline: none; box-shadow: 0 0 0 4px var(--primary-soft); }
+        input, select { border-radius: 0.75rem; padding: 0.8rem 1rem; background: #f1f5f9; border: 1px solid #e2e8f0; width: 100%; font-size: 14px; }
+        input:focus { outline: none; border-color: #4f46e5; background: white; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 0px; }
-        
-        .receipt-dot { border-top: 2px dashed #e2e8f0; height: 1px; width: 100%; margin: 15px 0; }
+        .nav-item.active { color: #4f46e5; font-weight: 800; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="pb-32">
+<body class="pb-24">
 
-    <!-- Header Fixo -->
-    <header class="p-6 sticky top-0 z-[100] glass border-b border-slate-100 flex justify-between items-center">
+    <!-- HEADER STATUS -->
+    <header class="p-5 sticky top-0 z-[100] glass border-b border-slate-200 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 theme-bg rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-100">
-                <i data-lucide="shield-check" class="text-white w-6 h-6"></i>
+            <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                <i data-lucide="shield-check" class="text-white w-5 h-5"></i>
             </div>
             <div>
-                <h1 id="brand-name-display" class="text-xl font-extrabold tracking-tighter leading-none">Acazis<span class="theme-text">OS</span></h1>
-                <p id="system-clock" class="text-[10px] font-bold text-slate-400 uppercase mt-1 tracking-widest">Aguardando...</p>
+                <h1 id="header-brand" class="text-lg font-extrabold tracking-tight">Acazis<span class="text-indigo-600">OS</span></h1>
+                <p id="clock" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Aguardando...</p>
             </div>
         </div>
-        <button onclick="toggleAdminPanel()" class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100 transition-all hover:bg-white hover:text-indigo-600">
-            <i data-lucide="settings" class="w-5 h-5"></i>
+        <button onclick="accessAdmin()" class="p-2.5 rounded-xl bg-slate-100 text-slate-400 hover:text-indigo-600 transition-all">
+            <i data-lucide="lock" class="w-5 h-5"></i>
         </button>
     </header>
 
-    <main class="max-w-md mx-auto p-5">
+    <main class="max-w-md mx-auto p-4">
 
         <!-- [SCREEN] HOME - CLIENTE -->
-        <section id="scr-home" class="screen active space-y-8">
-            <div class="theme-bg p-8 rounded-[40px] text-white shadow-2xl relative overflow-hidden">
+        <section id="scr-home" class="screen active space-y-6">
+            <div class="bg-indigo-600 p-8 rounded-[2rem] text-white shadow-xl shadow-indigo-100 relative overflow-hidden">
                 <div class="relative z-10">
-                    <p class="text-[10px] font-black uppercase tracking-widest opacity-60">Status do Estacionamento</p>
-                    <h2 class="text-3xl font-extrabold mt-2 mb-6 leading-tight">Gestão Segura & <br>Inteligente.</h2>
-                    <div class="flex gap-2">
-                        <button onclick="switchScreen('track')" class="bg-white text-indigo-600 px-6 py-3 rounded-2xl font-bold text-sm shadow-xl transition-transform active:scale-95">RASTREAR</button>
-                        <button onclick="switchScreen('services')" class="bg-white/20 backdrop-blur-md px-6 py-3 rounded-2xl font-bold text-sm border border-white/20">PREÇOS</button>
-                    </div>
+                    <p class="text-[10px] font-black uppercase opacity-60 tracking-widest">Área do Cliente</p>
+                    <h2 class="text-2xl font-bold mt-1 mb-6 leading-tight">Sua Lavagem <br>em Tempo Real.</h2>
+                    <button onclick="switchScreen('track')" class="bg-white text-indigo-600 px-6 py-3 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all">RASTREAR MEU CÓDIGO</button>
                 </div>
-                <i data-lucide="zap" class="absolute -bottom-6 -right-6 w-40 h-40 text-white/10 rotate-12"></i>
+                <i data-lucide="waves" class="absolute -bottom-6 -right-6 w-36 h-36 text-white/10 rotate-12"></i>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <div onclick="switchScreen('shop')" class="card p-6 flex flex-col items-center gap-3 transition-transform active:scale-95">
-                    <div class="p-4 bg-orange-50 text-orange-500 rounded-2xl"><i data-lucide="shopping-cart"></i></div>
-                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">Marketplace</span>
+                <div onclick="switchScreen('services')" class="card p-6 flex flex-col items-center gap-3 active:scale-95 transition-all">
+                    <div class="p-4 bg-blue-50 text-blue-500 rounded-2xl"><i data-lucide="list"></i></div>
+                    <span class="text-xs font-black uppercase tracking-widest text-slate-500">Serviços</span>
                 </div>
-                <div onclick="switchScreen('loyalty')" class="card p-6 flex flex-col items-center gap-3 transition-transform active:scale-95">
+                <div onclick="switchScreen('loyalty')" class="card p-6 flex flex-col items-center gap-3 active:scale-95 transition-all">
                     <div class="p-4 bg-rose-50 text-rose-500 rounded-2xl"><i data-lucide="award"></i></div>
-                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">Fidelidade</span>
+                    <span class="text-xs font-black uppercase tracking-widest text-slate-500">Fidelidade</span>
                 </div>
             </div>
         </section>
 
         <!-- [SCREEN] RASTREIO -->
-        <section id="scr-track" class="screen space-y-6">
+        <section id="scr-track" class="screen space-y-4">
             <div class="card p-8 text-center space-y-4">
-                <h2 class="text-xl font-bold">Localizar Veículo</h2>
-                <p class="text-sm text-slate-400">Digite o código do ticket fornecido na entrada.</p>
-                <input type="text" id="track-id" placeholder="CÓDIGO (EX: ACZ-123)" class="text-center font-mono font-bold text-2xl uppercase tracking-widest">
-                <button onclick="handleTracking()" class="w-full theme-bg text-white py-5 rounded-[22px] font-bold shadow-xl shadow-indigo-100 transition-transform active:scale-95">BUSCAR AGORA</button>
+                <h3 class="text-xl font-bold">Consultar Ticket</h3>
+                <input type="text" id="ipt-track" placeholder="Ex: ACZ-123" class="text-center font-mono font-black text-2xl uppercase tracking-widest">
+                <button onclick="trackCar()" class="w-full btn-indigo py-4 font-bold shadow-lg shadow-indigo-200">LOCALIZAR AGORA</button>
             </div>
-            <div id="track-result"></div>
+            <div id="track-result" class="animate-slideUp"></div>
         </section>
 
-        <!-- [SCREEN] SERVIÇOS E PREÇOS -->
-        <section id="scr-services" class="screen space-y-6">
-            <h2 class="text-2xl font-black px-2">Nossos Serviços</h2>
-            <div id="service-list-client" class="space-y-4"></div>
+        <!-- [SCREEN] SERVIÇOS -->
+        <section id="scr-services" class="screen space-y-4">
+            <h2 class="text-xl font-black px-2">Tabela de Preços</h2>
+            <div id="client-service-list" class="space-y-3"></div>
         </section>
 
         <!-- [SCREEN] ADMIN DASHBOARD -->
         <section id="scr-admin" class="screen space-y-6">
-            <div class="flex justify-between items-center px-2">
-                <h2 class="text-2xl font-black">Painel de Controle</h2>
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-2xl font-black">Painel Master</h2>
                 <div class="flex gap-2">
-                    <button onclick="exportData()" class="p-2 bg-slate-100 rounded-xl" title="Backup"><i data-lucide="database" class="w-4 h-4"></i></button>
-                    <button onclick="logoutAdmin()" class="p-2 bg-red-50 text-red-500 rounded-xl"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+                    <button onclick="exportDB()" class="p-2 bg-slate-100 rounded-lg text-slate-400"><i data-lucide="download" class="w-4 h-4"></i></button>
+                    <button onclick="logout()" class="p-2 bg-red-50 text-red-500 rounded-lg"><i data-lucide="log-out" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
-            <!-- Gráficos Rápidos -->
-            <div class="card p-6">
-                <canvas id="financeChart" height="150"></canvas>
+            <!-- Dashboard de Finanças -->
+            <div class="card p-6 bg-slate-900 text-white shadow-2xl">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Faturamento Total</p>
+                        <h3 id="adm-total-cash" class="text-3xl font-black">R$ 0,00</h3>
+                    </div>
+                    <div class="bg-indigo-600 p-2 rounded-xl"><i data-lucide="trending-up"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <p class="text-[8px] font-bold text-slate-400 uppercase">Ativos</p>
+                        <h4 id="adm-count-active" class="text-lg font-bold">0</h4>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <p class="text-[8px] font-bold text-slate-400 uppercase">Checkouts</p>
+                        <h4 id="adm-count-history" class="text-lg font-bold">0</h4>
+                    </div>
+                </div>
             </div>
 
-            <!-- Navegação Interna Admin -->
-            <div class="flex bg-slate-100 p-1 rounded-2xl overflow-x-auto">
-                <button onclick="switchAdminTab('patio')" class="adm-tab active flex-1 py-3 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap px-4">Pátio</button>
-                <button onclick="switchAdminTab('customize')" class="adm-tab flex-1 py-3 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap px-4">Customizar</button>
-                <button onclick="switchAdminTab('logs')" class="adm-tab flex-1 py-3 rounded-xl text-[10px] font-bold uppercase whitespace-nowrap px-4">Auditoria</button>
+            <!-- Abas Admin Internas -->
+            <div class="flex bg-slate-200 p-1 rounded-2xl">
+                <button onclick="switchAdminTab('patio')" class="adm-tab active flex-1 py-3 rounded-xl text-[10px] font-black uppercase text-indigo-600 bg-white shadow-sm">Pátio</button>
+                <button onclick="switchAdminTab('pricing')" class="adm-tab flex-1 py-3 rounded-xl text-[10px] font-black uppercase text-slate-500">Tabelas</button>
+                <button onclick="switchAdminTab('config')" class="adm-tab flex-1 py-3 rounded-xl text-[10px] font-black uppercase text-slate-500">Ajustes</button>
             </div>
 
-            <!-- TAB: PÁTIO -->
-            <div id="adm-patio" class="adm-content space-y-6">
-                <div class="card p-6 border-l-8 theme-border space-y-4">
-                    <h3 class="text-xs font-black uppercase text-slate-400">Entrada Rápida</h3>
+            <!-- TAB ADMIN: PÁTIO -->
+            <div id="adm-patio" class="adm-content space-y-4">
+                <div class="card p-6 border-l-8 border-indigo-600 space-y-4">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Novo Atendimento</h4>
                     <div class="grid grid-cols-2 gap-2">
                         <input type="text" id="in-plate" placeholder="PLACA" class="font-bold">
                         <input type="text" id="in-model" placeholder="MODELO">
                     </div>
                     <select id="in-service-select" class="font-bold text-xs"></select>
-                    <button onclick="handleNewEntry()" class="w-full theme-bg text-white py-4 rounded-2xl font-bold shadow-lg">GERAR TICKET</button>
+                    <button onclick="createVehicle()" class="w-full btn-indigo py-4 font-bold">REGISTRAR ENTRADA</button>
                 </div>
-                <div id="active-vehicle-list" class="space-y-4"></div>
+                <div id="adm-active-list" class="space-y-4"></div>
             </div>
 
-            <!-- TAB: CUSTOMIZAÇÃO -->
-            <div id="adm-customize" class="adm-content hidden space-y-6">
+            <!-- TAB ADMIN: TABELAS DE PREÇO -->
+            <div id="adm-pricing" class="adm-content hidden space-y-4">
                 <div class="card p-6 space-y-4">
-                    <h3 class="font-bold text-sm uppercase text-slate-400">Identidade Visual</h3>
-                    <div class="space-y-3">
-                        <label class="text-[10px] font-bold uppercase">Nome da Marca</label>
-                        <input type="text" id="cfg-brand" placeholder="Ex: Acazis OS">
-                        
-                        <label class="text-[10px] font-bold uppercase">Cor do Tema (Hex)</label>
-                        <div class="flex gap-2">
-                            <input type="color" id="cfg-color" class="w-16 h-12 p-1">
-                            <input type="text" id="cfg-color-hex" placeholder="#6366f1">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Gerenciar Serviços</h4>
+                    <div id="adm-service-manager" class="space-y-2"></div>
+                    <button onclick="addNewServicePrompt()" class="w-full py-3 bg-slate-900 text-white rounded-xl text-xs font-bold">+ NOVO SERVIÇO</button>
+                </div>
+                <div class="card p-6 space-y-4">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Tarifas Adicionais</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] font-bold">Taxa Extra R$</label>
+                            <input type="number" id="cfg-tax-fixed" onchange="updateGlobalCfg()">
                         </div>
-                        <button onclick="updateIdentity()" class="w-full py-4 theme-bg text-white rounded-2xl font-bold">APLICAR MUDANÇAS</button>
+                        <div>
+                            <label class="text-[10px] font-bold">Desconto Padrão %</label>
+                            <input type="number" id="cfg-desc-fixed" onchange="updateGlobalCfg()">
+                        </div>
                     </div>
                 </div>
-
-                <div class="card p-6 space-y-4">
-                    <h3 class="font-bold text-sm uppercase text-slate-400">Gestão de Serviços</h3>
-                    <div id="adm-service-manager" class="space-y-2"></div>
-                    <button onclick="addNewServicePrompt()" class="w-full py-3 bg-slate-900 text-white rounded-2xl text-xs font-bold">+ NOVO SERVIÇO</button>
-                </div>
             </div>
 
-            <!-- TAB: LOGS -->
-            <div id="adm-logs" class="adm-content hidden space-y-4">
-                <div id="audit-logs" class="space-y-2 max-h-[400px] overflow-y-auto"></div>
+            <!-- TAB ADMIN: AJUSTES -->
+            <div id="adm-config" class="adm-content hidden space-y-4">
+                <div class="card p-6 space-y-4">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Identidade da Empresa</h4>
+                    <input type="text" id="cfg-brand-name" placeholder="Nome da Marca" onchange="updateGlobalCfg()">
+                    <input type="text" id="cfg-brand-color" placeholder="Cor Principal (Hex)" onchange="updateGlobalCfg()">
+                    <button onclick="location.reload()" class="w-full py-3 bg-indigo-600 text-white rounded-xl text-xs font-bold">Aplicar e Reiniciar</button>
+                </div>
+                <button onclick="fullReset()" class="w-full py-4 text-red-500 font-black text-xs uppercase border-2 border-red-100 rounded-2xl">Zerar Banco de Dados</button>
             </div>
         </section>
 
     </main>
 
-    <!-- Navegação Dock (Mobile) -->
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[30px] shadow-2xl z-[150] flex justify-around items-center px-4">
-        <button onclick="switchScreen('home')" class="dock-item active flex flex-col items-center gap-1">
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[2rem] shadow-2xl z-[150] flex justify-around items-center px-4">
+        <button onclick="switchScreen('home')" class="nav-item active flex flex-col items-center gap-1 transition-all">
             <i data-lucide="layout-grid" class="w-6 h-6"></i>
         </button>
-        <button onclick="switchScreen('track')" class="dock-item text-slate-300 flex flex-col items-center gap-1">
+        <button onclick="switchScreen('track')" class="nav-item text-slate-300 flex flex-col items-center gap-1">
             <i data-lucide="search" class="w-6 h-6"></i>
         </button>
-        <button onclick="switchScreen('services')" class="dock-item text-slate-300 flex flex-col items-center gap-1">
-            <i data-lucide="info" class="w-6 h-6"></i>
-        </button>
-        <button onclick="switchScreen('shop')" class="dock-item text-slate-300 flex flex-col items-center gap-1">
-            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+        <button onclick="switchScreen('services')" class="nav-item text-slate-300 flex flex-col items-center gap-1">
+            <i data-lucide="list" class="w-6 h-6"></i>
         </button>
     </nav>
 
     <script>
-        // --- MOTOR DE DADOS E ESTADO ---
-        let state = JSON.parse(localStorage.getItem('acz_quantum_state')) || {
+        // --- DATA ENGINE (ESTADO CENTRAL) ---
+        let state = JSON.parse(localStorage.getItem('acz_ultra_db')) || {
             brand: 'Acazis OS',
-            theme: '#6366f1',
-            vehicles: [],
+            theme: '#4f46e5',
+            activeVehicles: [],
             history: [],
-            logs: [],
             services: [
                 { id: 1, name: 'Lavagem Simples', price: 35 },
                 { id: 2, name: 'Lavagem Completa', price: 60 },
-                { id: 3, name: 'Polimento', price: 150 }
+                { id: 3, name: 'Estacionamento Hora', price: 15 }
             ],
-            shop: [],
-            points: 0,
+            config: { tax: 0, desc: 0 },
             isAdmin: false
         };
 
         // --- INICIALIZAÇÃO ---
         function init() {
             lucide.createIcons();
-            applyTheme();
             updateClock();
-            setInterval(updateClock, 60000);
+            setInterval(updateClock, 10000);
+            applyTheme();
             renderAll();
         }
 
         function save() {
-            localStorage.setItem('acz_quantum_state', JSON.stringify(state));
+            localStorage.setItem('acz_ultra_db', JSON.stringify(state));
             renderAll();
-        }
-
-        function logAction(action) {
-            const entry = {
-                time: new Date().toLocaleString(),
-                action: action
-            };
-            state.logs.unshift(entry);
-            if(state.logs.length > 50) state.logs.pop();
         }
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('system-clock').innerText = now.toLocaleString('pt-br', { weekday: 'long', hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').innerText = now.toLocaleString('pt-br', { hour: '2-digit', minute: '2-digit', weekday: 'short' });
         }
 
-        // --- SEGURANÇA / ADMIN ---
-        async function toggleAdminPanel() {
-            if(state.isAdmin) return switchScreen('admin');
+        function applyTheme() {
+            document.getElementById('header-brand').innerHTML = `${state.brand.split(' ')[0]}<span style="color:${state.theme}">${state.brand.split(' ').slice(1).join(' ') || 'OS'}</span>`;
+            document.getElementById('cfg-brand-name').value = state.brand;
+            document.getElementById('cfg-brand-color').value = state.theme;
+            document.getElementById('cfg-tax-fixed').value = state.config.tax;
+            document.getElementById('cfg-desc-fixed').value = state.config.desc;
+        }
 
+        // --- AUTH & NAVEGAÇÃO ---
+        async function accessAdmin() {
+            if(state.isAdmin) return switchScreen('admin');
             const { value: pass } = await Swal.fire({
-                title: 'Acesso Restrito',
+                title: 'Segurança',
                 input: 'password',
-                inputPlaceholder: 'Senha do Administrador',
+                inputPlaceholder: 'Senha Admin',
                 confirmButtonColor: state.theme
             });
-
             if(pass === '1234321') {
                 state.isAdmin = true;
-                logAction("Administrador Logado");
                 switchScreen('admin');
-                renderCharts();
             } else if(pass) {
-                Swal.fire('Erro', 'Senha incorreta', 'error');
+                Swal.fire('Erro', 'Senha Inválida', 'error');
             }
         }
 
-        function logoutAdmin() {
+        function logout() {
             state.isAdmin = false;
-            logAction("Administrador deslogou");
             switchScreen('home');
         }
 
-        // --- NAVEGAÇÃO ---
         function switchScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('scr-' + id).classList.add('active');
-            
-            document.querySelectorAll('.dock-item').forEach(d => {
-                d.classList.remove('active');
-                d.classList.add('text-slate-300');
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.remove('active', 'text-indigo-600');
+                n.classList.add('text-slate-300');
             });
-            const activeDock = document.querySelector(`[onclick="switchScreen('${id}')"]`);
-            if(activeDock) {
-                activeDock.classList.add('active');
-                activeDock.classList.remove('text-slate-300');
-            }
-            if(id === 'admin') renderCharts();
+            const activeNav = document.querySelector(`[onclick="switchScreen('${id}')"]`);
+            if(activeNav) activeNav.classList.add('active');
             lucide.createIcons();
-            window.scrollTo(0,0);
         }
 
         function switchAdminTab(tab) {
             document.querySelectorAll('.adm-content').forEach(c => c.classList.add('hidden'));
             document.getElementById('adm-' + tab).classList.remove('hidden');
             document.querySelectorAll('.adm-tab').forEach(b => {
-                b.classList.remove('active', 'bg-white', 'shadow-sm', 'theme-text');
-                b.classList.add('text-slate-400');
+                b.classList.remove('active', 'bg-white', 'shadow-sm', 'text-indigo-600');
+                b.classList.add('text-slate-500');
             });
-            event.currentTarget.classList.add('active', 'bg-white', 'shadow-sm', 'theme-text');
+            event.currentTarget.classList.add('active', 'bg-white', 'shadow-sm', 'text-indigo-600');
         }
 
-        // --- OPERAÇÕES ---
-        function handleNewEntry() {
+        // --- OPERAÇÕES PÁTIO ---
+        function createVehicle() {
             const plate = document.getElementById('in-plate').value.trim().toUpperCase();
             const model = document.getElementById('in-model').value.trim();
             const serviceId = document.getElementById('in-service-select').value;
@@ -336,194 +294,74 @@
                 id: Date.now(),
                 code, plate, model,
                 service: service.name,
-                price: service.price,
+                basePrice: service.price,
                 entryTime: new Date().getTime(),
                 status: 'Aguardando'
             };
 
-            state.vehicles.unshift(entry);
-            logAction(`Entrada de veículo: ${plate} (${code})`);
+            state.activeVehicles.unshift(entry);
             save();
-            Swal.fire('Sucesso', `Ticket ${code} gerado para ${service.name}`, 'success');
+            Swal.fire('Sucesso', `Entrada registrada: ${code}`, 'success');
             document.getElementById('in-plate').value = '';
             document.getElementById('in-model').value = '';
         }
 
-        function updateStatus(id, newStatus) {
-            const v = state.vehicles.find(x => x.id === id);
-            v.status = newStatus;
-            logAction(`Status ${v.code} alterado para ${newStatus}`);
+        function editVehicle(id) {
+            const v = state.activeVehicles.find(x => x.id === id);
+            Swal.fire({
+                title: 'Editar Veículo',
+                html: `<input id="sw-plate" class="swal2-input" value="${v.plate}">
+                       <input id="sw-model" class="swal2-input" value="${v.model}">`,
+                preConfirm: () => {
+                    v.plate = document.getElementById('sw-plate').value.toUpperCase();
+                    v.model = document.getElementById('sw-model').value;
+                    save();
+                }
+            });
+        }
+
+        function updateStatus(id, s) {
+            const v = state.activeVehicles.find(x => x.id === id);
+            v.status = s;
             save();
         }
 
         function checkout(id) {
-            const v = state.vehicles.find(x => x.id === id);
+            const v = state.activeVehicles.find(x => x.id === id);
+            const total = (v.basePrice + state.config.tax) * (1 - state.config.desc / 100);
             
             Swal.fire({
                 title: 'Finalizar Saída?',
-                text: `${v.model} - Total: R$ ${v.price.toFixed(2)}`,
+                text: `${v.plate} - Total: R$ ${total.toFixed(2)}`,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: state.theme,
-                confirmButtonText: 'Confirmar Pagamento'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    state.history.push({...v, exitTime: new Date().getTime()});
-                    state.vehicles = state.vehicles.filter(x => x.id !== id);
-                    state.points++;
-                    logAction(`Saída concluída: ${v.code} - R$ ${v.price}`);
+                confirmButtonText: 'Confirmar Pagamento',
+                confirmButtonColor: '#10b981'
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    state.history.push({...v, total, exitTime: Date.now()});
+                    state.activeVehicles = state.activeVehicles.filter(x => x.id !== id);
                     save();
-                    generateReceipt(v);
+                    Swal.fire('Finalizado', 'Pagamento registrado com sucesso.', 'success');
                 }
             });
         }
 
-        // --- TRACKING CLIENTE ---
-        function handleTracking() {
-            const code = document.getElementById('track-id').value.toUpperCase();
-            const v = state.vehicles.find(x => x.code === code);
-            const res = document.getElementById('track-result');
-
-            if(!v) {
-                res.innerHTML = `<div class="card p-10 text-center text-slate-300 font-bold">Ticket não localizado.</div>`;
-                return;
-            }
-
-            res.innerHTML = `
-                <div class="card p-8 border-t-8 theme-border animate-slideUp">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h4 class="text-2xl font-black text-slate-800">${v.model}</h4>
-                            <p class="theme-text font-bold uppercase text-xs tracking-widest">${v.plate}</p>
-                        </div>
-                        <span class="bg-indigo-50 theme-text px-4 py-1.5 rounded-full text-[10px] font-black uppercase">${v.status}</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex justify-between p-4 bg-slate-50 rounded-2xl">
-                            <span class="text-xs font-bold text-slate-400">Serviço</span>
-                            <span class="text-xs font-bold text-slate-800">${v.service}</span>
-                        </div>
-                        <div class="flex justify-between p-4 bg-slate-50 rounded-2xl">
-                            <span class="text-xs font-bold text-slate-400">Valor Total</span>
-                            <span class="text-sm font-black theme-text">R$ ${v.price.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            lucide.createIcons();
-        }
-
-        // --- CUSTOMIZAÇÃO E TEMA ---
-        function applyTheme() {
-            document.documentElement.style.setProperty('--primary', state.theme);
-            document.documentElement.style.setProperty('--primary-soft', state.theme + '1A');
-            document.getElementById('brand-name-display').innerHTML = `${state.brand.split(' ')[0]}<span class="theme-text">${state.brand.split(' ').slice(1).join(' ') || 'OS'}</span>`;
-            document.getElementById('cfg-brand').value = state.brand;
-            document.getElementById('cfg-color').value = state.theme;
-            document.getElementById('cfg-color-hex').value = state.theme;
-        }
-
-        function updateIdentity() {
-            state.brand = document.getElementById('cfg-brand').value;
-            state.theme = document.getElementById('cfg-color').value;
-            logAction("Identidade Visual alterada");
-            save();
-            applyTheme();
-            Swal.fire('Atualizado', 'A marca foi personalizada com sucesso.', 'success');
-        }
-
-        // --- RENDERS ---
-        function renderAll() {
-            renderActiveList();
-            renderServiceList();
-            renderAdminServices();
-            renderLogs();
-            lucide.createIcons();
-        }
-
-        function renderActiveList() {
-            const container = document.getElementById('active-vehicle-list');
-            container.innerHTML = state.vehicles.map(v => `
-                <div class="card p-5 border-l-4 theme-border">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="theme-bg text-white font-black px-2 py-0.5 rounded text-[10px] tracking-tighter">${v.code}</span>
-                        <p class="text-sm font-black text-slate-800">${v.plate}</p>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button onclick="updateStatus(${v.id}, 'Lavando')" class="p-2 ${v.status === 'Lavando' ? 'theme-bg text-white' : 'bg-slate-50 text-slate-400'} rounded-xl text-[8px] font-black uppercase">Lavar</button>
-                        <button onclick="updateStatus(${v.id}, 'Pronto')" class="p-2 ${v.status === 'Pronto' ? 'theme-bg text-white' : 'bg-slate-50 text-slate-400'} rounded-xl text-[8px] font-black uppercase">Pronto</button>
-                        <button onclick="checkout(${v.id})" class="p-2 bg-slate-900 text-white rounded-xl text-[8px] font-black uppercase">Saída</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderServiceList() {
-            const container = document.getElementById('service-list-client');
-            const select = document.getElementById('in-service-select');
-            
-            container.innerHTML = state.services.map(s => `
-                <div class="card p-5 flex justify-between items-center">
-                    <span class="font-bold text-slate-700">${s.name}</span>
-                    <span class="font-black theme-text">R$ ${s.price.toFixed(2)}</span>
-                </div>
-            `).join('');
-
-            select.innerHTML = state.services.map(s => `<option value="${s.id}">${s.name} (R$ ${s.price})</option>`).join('');
-        }
-
-        function renderAdminServices() {
-            const container = document.getElementById('adm-service-manager');
-            container.innerHTML = state.services.map(s => `
-                <div class="flex gap-2 mb-2">
-                    <input class="bg-white p-2 text-xs" value="${s.name}" onchange="editService(${s.id}, 'name', this.value)">
-                    <input class="bg-white p-2 text-xs w-20" type="number" value="${s.price}" onchange="editService(${s.id}, 'price', this.value)">
-                    <button onclick="deleteService(${s.id})" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        function renderLogs() {
-            const container = document.getElementById('audit-logs');
-            container.innerHTML = state.logs.map(l => `
-                <div class="text-[9px] p-2 bg-slate-50 border-b border-slate-100 font-mono">
-                    <span class="text-slate-400">${l.time}</span> | <span class="text-indigo-600 font-bold">${l.action}</span>
-                </div>
-            `).join('');
-        }
-
-        // --- FINANCEIRO ---
-        function renderCharts() {
-            const ctx = document.getElementById('financeChart').getContext('2d');
-            if (window.myChart) window.myChart.destroy();
-            
-            window.myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Bruto'],
-                    datasets: [{
-                        label: 'R$ Arrecadado',
-                        data: [state.history.reduce((a,b) => a + b.price, 0)],
-                        backgroundColor: state.theme,
-                        borderRadius: 10
-                    }]
-                },
-                options: { 
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, display: false } }
+        // --- GESTÃO DE SERVIÇOS ---
+        function addNewServicePrompt() {
+            Swal.fire({
+                title: 'Novo Serviço',
+                html: `<input id="sw-name" class="swal2-input" placeholder="Nome">
+                       <input id="sw-price" type="number" class="swal2-input" placeholder="Preço R$">`,
+                preConfirm: () => {
+                    const name = document.getElementById('sw-name').value;
+                    const price = parseFloat(document.getElementById('sw-price').value);
+                    if(name && price) {
+                        state.services.push({ id: Date.now(), name, price });
+                        save();
+                    }
                 }
             });
-
-            document.getElementById('adm-total-cash').innerText = `R$ ${state.history.reduce((a,b) => a + b.price, 0).toFixed(2)}`;
-        }
-
-        // --- UTILITÁRIOS ---
-        function editService(id, key, val) {
-            const s = state.services.find(x => x.id === id);
-            s[key] = key === 'price' ? parseFloat(val) : val;
-            save();
         }
 
         function deleteService(id) {
@@ -531,65 +369,135 @@
             save();
         }
 
-        async function addNewServicePrompt() {
-            const { value: formValues } = await Swal.fire({
-                title: 'Novo Serviço',
-                html: '<input id="sw-name" class="swal2-input" placeholder="Nome">' +
-                      '<input id="sw-price" type="number" class="swal2-input" placeholder="Preço">',
-                focusConfirm: false,
-                confirmButtonColor: state.theme,
-                preConfirm: () => [document.getElementById('sw-name').value, document.getElementById('sw-price').value]
-            });
+        // --- RASTREIO CLIENTE ---
+        function trackCar() {
+            const code = document.getElementById('ipt-track').value.toUpperCase();
+            const v = state.activeVehicles.find(x => x.code === code);
+            const res = document.getElementById('track-result');
 
-            if (formValues && formValues[0]) {
-                state.services.push({ id: Date.now(), name: formValues[0], price: parseFloat(formValues[1]) });
-                save();
+            if(!v) {
+                res.innerHTML = `<div class="card p-10 text-center text-slate-400 font-bold">Código não localizado.</div>`;
+                return;
             }
-        }
 
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "acazis_backup.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        function generateReceipt(v) {
-            Swal.fire({
-                title: 'Recibo de Saída',
-                html: `
-                    <div class="text-left font-mono text-xs p-4 bg-slate-50 border border-slate-200">
-                        <p class="font-bold text-center">${state.brand.toUpperCase()}</p>
-                        <div class="receipt-dot"></div>
-                        <p>TICKET: ${v.code}</p>
-                        <p>VEÍCULO: ${v.model}</p>
-                        <p>PLACA: ${v.plate}</p>
-                        <div class="receipt-dot"></div>
-                        <p>SERVIÇO: ${v.service}</p>
-                        <p class="text-lg font-black mt-2">TOTAL: R$ ${v.price.toFixed(2)}</p>
-                        <div class="receipt-dot"></div>
-                        <p class="text-center italic">Obrigado pela preferência!</p>
+            res.innerHTML = `
+                <div class="card p-8 border-t-8 border-indigo-600 animate-slideUp">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h4 class="text-2xl font-black">${v.model}</h4>
+                            <p class="text-indigo-600 font-bold uppercase text-xs">${v.plate}</p>
+                        </div>
+                        <span class="bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase">${v.status}</span>
                     </div>
-                `,
-                confirmButtonText: 'Fechar',
-                confirmButtonColor: state.theme
-            });
+                    <div class="space-y-3">
+                        <div class="flex justify-between p-4 bg-slate-50 rounded-2xl">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Serviço</span>
+                            <span class="text-xs font-bold text-slate-800">${v.service}</span>
+                        </div>
+                        <div class="flex justify-between p-4 bg-slate-50 rounded-2xl">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Entrada</span>
+                            <span class="text-xs font-bold text-slate-800">${new Date(v.entryTime).toLocaleTimeString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // --- RENDERS ---
+        function renderAll() {
+            renderPatio();
+            renderPricing();
+            renderStats();
+            renderClientServices();
+            lucide.createIcons();
+        }
+
+        function renderPatio() {
+            const list = document.getElementById('adm-active-list');
+            list.innerHTML = state.activeVehicles.map(v => `
+                <div class="card p-5 border-l-4 border-indigo-600">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-indigo-600 text-white font-black px-2 py-0.5 rounded text-[10px] tracking-tighter">${v.code}</span>
+                        <div class="flex gap-2">
+                            <button onclick="editVehicle(${v.id})" class="text-slate-400"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <p class="text-sm font-black text-slate-800">${v.plate}</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="updateStatus(${v.id}, 'Lavando')" class="p-2 ${v.status === 'Lavando' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-slate-100 text-slate-400'} rounded-xl text-[8px] font-black uppercase">Lavar</button>
+                        <button onclick="updateStatus(${v.id}, 'Pronto')" class="p-2 ${v.status === 'Pronto' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-slate-100 text-slate-400'} rounded-xl text-[8px] font-black uppercase">Pronto</button>
+                        <button onclick="checkout(${v.id})" class="p-2 bg-slate-900 text-white rounded-xl text-[8px] font-black uppercase">Saída</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPricing() {
+            const container = document.getElementById('adm-service-manager');
+            const select = document.getElementById('in-service-select');
+            
+            container.innerHTML = state.services.map(s => `
+                <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl">
+                    <input class="bg-transparent border-none p-0 flex-1 font-bold text-xs" value="${s.name}" onchange="editService(${s.id}, 'name', this.value)">
+                    <input class="bg-transparent border-none p-0 w-16 font-black text-indigo-600" type="number" value="${s.price}" onchange="editService(${s.id}, 'price', parseFloat(this.value))">
+                    <button onclick="deleteService(${s.id})" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            `).join('');
+
+            select.innerHTML = state.services.map(s => `<option value="${s.id}">${s.name} (R$ ${s.price})</option>`).join('');
+        }
+
+        function renderClientServices() {
+            document.getElementById('client-service-list').innerHTML = state.services.map(s => `
+                <div class="card p-5 flex justify-between items-center">
+                    <span class="font-bold text-slate-700">${s.name}</span>
+                    <span class="font-black text-indigo-600">R$ ${s.price.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderStats() {
+            const revenue = state.history.reduce((a, b) => a + b.total, 0);
+            document.getElementById('adm-total-cash').innerText = `R$ ${revenue.toLocaleString('pt-br', {minimumFractionDigits: 2})}`;
+            document.getElementById('adm-count-active').innerText = state.activeVehicles.length;
+            document.getElementById('adm-count-history').innerText = state.history.length;
+        }
+
+        // --- UTILITÁRIOS ---
+        function updateGlobalCfg() {
+            state.brand = document.getElementById('cfg-brand-name').value;
+            state.theme = document.getElementById('cfg-brand-color').value;
+            state.config.tax = parseFloat(document.getElementById('cfg-tax-fixed').value) || 0;
+            state.config.desc = parseFloat(document.getElementById('cfg-desc-fixed').value) || 0;
+            localStorage.setItem('acz_ultra_db', JSON.stringify(state));
+        }
+
+        function editService(id, key, val) {
+            const s = state.services.find(x => x.id === id);
+            s[key] = val;
+            save();
+        }
+
+        function exportDB() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "acazis_backup.json");
+            dlAnchorElem.click();
         }
 
         function fullReset() {
             Swal.fire({
-                title: 'Zerar Sistema?',
-                text: "Todos os dados serão apagados permanentemente!",
+                title: 'Tem certeza?',
+                text: "Isso apagará todos os dados do sistema permanentemente!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 confirmButtonText: 'Sim, Apagar Tudo'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    localStorage.removeItem('acz_quantum_state');
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    localStorage.removeItem('acz_ultra_db');
                     location.reload();
                 }
             });
@@ -598,4 +506,4 @@
         window.onload = init;
     </script>
 </body>
-</html>
+    </html>
