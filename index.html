@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acazis OS | Estapar Edition</title>
+    <title>Acazis OS | Elite Edition</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,137 +12,175 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
-        :root { --p: #003399; --s: #f3f4f6; } /* Azul Estapar */
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f9fafb; -webkit-tap-highlight-color: transparent; }
+        :root { --primary: #1e1b4b; --accent: #4f46e5; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; }
         .screen { display: none; }
-        .screen.active { display: block; animation: slideIn 0.3s ease-out; }
-        
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .screen.active { display: block; animation: slideUp 0.4s cubic-bezier(0, 0, 0.2, 1); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card-premium { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #f3f4f6; }
-        .btn-estapar { background: var(--p); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; }
-        .btn-estapar:active { transform: scale(0.97); }
-
-        .dock-active { color: var(--p); position: relative; }
-        .dock-active::after { content: ''; position: absolute; bottom: -10px; width: 5px; height: 5px; background: var(--p); border-radius: 50%; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; }
+        .card { background: white; border-radius: 24px; border: 1px solid #f1f5f9; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         
-        input, select { border-radius: 12px; padding: 14px; background: #fff; border: 1.5px solid #e5e7eb; width: 100%; outline: none; transition: 0.2s; }
-        input:focus { border-color: var(--p); ring: 2px solid rgba(0,51,153,0.1); }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.active i { transform: translateY(-3px); filter: drop-shadow(0 4px 6px rgba(79, 70, 229, 0.3)); }
+
+        input, select { border-radius: 14px; padding: 14px; background: #f1f5f9; border: 2px solid transparent; width: 100%; transition: 0.3s; }
+        input:focus { border-color: var(--accent); background: white; outline: none; }
+        
+        .btn-primary { background: var(--accent); color: white; border-radius: 16px; font-weight: 800; transition: 0.3s; }
+        .btn-primary:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="pb-28">
 
-    <!-- HEADER ESTAPAR STYLE -->
-    <header class="p-5 sticky top-0 z-50 glass-nav flex justify-between items-center">
+    <!-- Header -->
+    <header class="p-6 sticky top-0 z-50 glass flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-[#003399] rounded-xl flex items-center justify-center">
-                <i data-lucide="parking-circle" class="text-white w-6 h-6"></i>
+            <div class="w-10 h-10 bg-indigo-900 rounded-2xl flex items-center justify-center shadow-lg">
+                <i data-lucide="shield-check" class="text-white w-5 h-5"></i>
             </div>
             <div>
-                <h1 class="font-extrabold text-lg text-slate-800 tracking-tight">Acazis<span class="text-[#003399]">OS</span></h1>
-                <p id="conn-status" class="text-[9px] font-bold text-green-500 uppercase tracking-widest flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Cloud Ativo
+                <h1 class="font-extrabold text-lg leading-none">Acazis<span class="text-indigo-600">OS</span></h1>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Sistema Online
                 </p>
             </div>
         </div>
-        <button onclick="window.handleAdminAuth()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-            <i data-lucide="user" class="w-5 h-5"></i>
-        </button>
+        <button onclick="window.checkAdmin()" class="p-2.5 rounded-xl bg-slate-50 text-slate-400"><i data-lucide="lock" class="w-5 h-5"></i></button>
     </header>
 
-    <main class="max-w-md mx-auto p-4 space-y-6">
+    <main class="max-w-md mx-auto p-5">
 
         <!-- [SCREEN] HOME -->
         <section id="scr-home" class="screen active space-y-6">
-            <!-- Banner Principal -->
-            <div class="bg-gradient-to-br from-[#003399] to-[#0055ff] p-6 rounded-[28px] text-white relative overflow-hidden shadow-xl">
+            <div class="bg-indigo-900 p-8 rounded-[32px] text-white shadow-2xl relative overflow-hidden">
                 <div class="relative z-10">
-                    <h2 class="text-2xl font-bold leading-tight">Olá, <br>Bem-vindo!</h2>
-                    <p class="text-blue-100 text-sm mt-2 opacity-80 font-medium">O que deseja fazer hoje?</p>
+                    <p class="text-[10px] font-bold uppercase opacity-50 tracking-widest">Premium Car Care</p>
+                    <h2 class="text-2xl font-bold mt-2 mb-6 leading-tight">Excelência em <br>cada detalhe.</h2>
+                    <button onclick="window.switchScreen('track')" class="bg-white text-indigo-900 px-6 py-3 rounded-2xl font-bold text-sm shadow-xl">RASTREAR MEU TICKET</button>
                 </div>
-                <div class="flex gap-3 mt-6 relative z-10">
-                    <button onclick="window.switchScreen('track')" class="bg-white text-[#003399] px-5 py-2.5 rounded-xl text-xs font-bold shadow-lg">Rastrear Veículo</button>
-                    <button onclick="window.switchScreen('services')" class="bg-blue-400/30 backdrop-blur-md px-5 py-2.5 rounded-xl text-xs font-bold">Serviços</button>
-                </div>
-                <i data-lucide="car-front" class="absolute -bottom-4 -right-4 w-32 h-32 text-white/10 rotate-12"></i>
+                <i data-lucide="droplets" class="absolute -bottom-6 -right-6 w-40 h-40 text-white/5 rotate-12"></i>
             </div>
 
-            <!-- Botões de Ação Rápida -->
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="window.switchScreen('loyalty')" class="card-premium p-6 flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center"><i data-lucide="award"></i></div>
-                    <span class="text-xs font-bold text-slate-600">Fidelidade</span>
-                </button>
-                <button onclick="window.switchScreen('mensalistas')" class="card-premium p-6 flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center"><i data-lucide="users"></i></div>
-                    <span class="text-xs font-bold text-slate-600">Mensalistas</span>
-                </button>
+                <div onclick="window.switchScreen('prices')" class="card p-6 flex flex-col items-center gap-3 active:scale-95 transition-all">
+                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-2xl"><i data-lucide="list-checks"></i></div>
+                    <span class="text-xs font-bold uppercase text-slate-500">Serviços</span>
+                </div>
+                <div onclick="window.switchScreen('about')" class="card p-6 flex flex-col items-center gap-3 active:scale-95 transition-all">
+                    <div class="p-4 bg-emerald-50 text-emerald-600 rounded-2xl"><i data-lucide="info"></i></div>
+                    <span class="text-xs font-bold uppercase text-slate-500">Sobre Nós</span>
+                </div>
             </div>
         </section>
 
         <!-- [SCREEN] RASTREIO -->
         <section id="scr-track" class="screen space-y-4">
-            <div class="card-premium p-8 text-center space-y-5">
-                <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
-                    <i data-lucide="scan-line" class="text-[#003399] w-8 h-8"></i>
-                </div>
-                <h3 class="text-xl font-bold">Código do Ticket</h3>
-                <input type="text" id="ipt-track" placeholder="EX: ACZ-123" class="text-center font-black text-2xl uppercase tracking-widest">
-                <button onclick="window.trackCar()" class="w-full btn-estapar py-4 shadow-lg shadow-blue-100">BUSCAR STATUS</button>
+            <div class="card p-8 text-center space-y-4">
+                <h3 class="text-xl font-bold">Localizar Veículo</h3>
+                <input type="text" id="ipt-track" placeholder="CÓDIGO (EX: ACZ-123)" class="text-center font-black text-2xl uppercase tracking-widest text-indigo-600">
+                <button onclick="window.trackCar()" class="w-full btn-primary py-4 shadow-xl">BUSCAR STATUS</button>
             </div>
             <div id="track-result"></div>
         </section>
 
+        <!-- [SCREEN] TABELA DE PREÇOS -->
+        <section id="scr-prices" class="screen space-y-6">
+            <div class="px-2">
+                <h2 class="text-2xl font-black">Nossa Tabela</h2>
+                <p class="text-sm text-slate-400">Preços atualizados em tempo real.</p>
+            </div>
+            <div id="client-service-list" class="space-y-3">
+                <!-- Serviços Cloud -->
+            </div>
+        </section>
+
+        <!-- [SCREEN] SOBRE NÓS -->
+        <section id="scr-about" class="screen space-y-6">
+            <div class="card p-8 space-y-6">
+                <div class="w-16 h-16 bg-indigo-100 rounded-3xl flex items-center justify-center text-indigo-600">
+                    <i data-lucide="map-pin" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-2xl font-black">Acazis Lavalava</h2>
+                <p class="text-slate-500 leading-relaxed">
+                    Somos especializados em estética automotiva de alto padrão. Nosso sistema de gestão em nuvem permite que você acompanhe cada etapa da lavagem do seu veículo com total transparência e segurança.
+                </p>
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="phone" class="w-5 h-5 text-indigo-600"></i>
+                        <span class="font-bold text-sm">(11) 99999-9999</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="instagram" class="w-5 h-5 text-indigo-600"></i>
+                        <span class="font-bold text-sm">@acazis_lavalava</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- [SCREEN] ADMIN DASHBOARD -->
         <section id="scr-admin" class="screen space-y-6">
-            <div class="flex justify-between items-center">
-                <h2 class="text-2xl font-black text-slate-800">Painel Master</h2>
-                <button onclick="window.logoutAdmin()" class="text-red-500 font-bold text-xs uppercase">Sair</button>
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-2xl font-black">Painel Master</h2>
+                <button onclick="window.logoutAdmin()" class="bg-red-50 text-red-500 p-2.5 rounded-xl"><i data-lucide="log-out" class="w-5 h-5"></i></button>
             </div>
 
-            <!-- Mini Dashboard -->
             <div class="grid grid-cols-2 gap-3">
-                <div class="card-premium p-5 bg-slate-900 text-white">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Caixa Hoje</p>
-                    <h4 id="adm-total-cash" class="text-lg font-black text-emerald-400">R$ 0,00</h4>
+                <div class="card p-5 bg-slate-900 text-white">
+                    <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Caixa Hoje</p>
+                    <h4 id="adm-cash" class="text-lg font-black text-emerald-400">R$ 0,00</h4>
                 </div>
-                <div class="card-premium p-5">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Veículos Ativos</p>
-                    <h4 id="adm-active-count" class="text-lg font-black text-[#003399]">0</h4>
+                <div class="card p-5">
+                    <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Veículos Ativos</p>
+                    <h4 id="adm-count" class="text-lg font-black text-indigo-600">0</h4>
                 </div>
             </div>
 
-            <!-- Entrada de Veículo -->
-            <div class="card-premium p-6 border-t-4 border-[#003399] space-y-4">
-                <h4 class="text-xs font-bold text-slate-400 uppercase">Novo Atendimento</h4>
-                <div class="space-y-3">
-                    <input type="text" id="in-plate" placeholder="PLACA DO VEÍCULO" class="font-bold uppercase tracking-widest">
-                    <input type="text" id="in-model" placeholder="MODELO / COR">
-                    <select id="in-service-select" class="font-bold text-sm text-slate-600"></select>
-                </div>
-                <button onclick="window.addVehicle()" class="w-full btn-estapar py-4">REGISTRAR ENTRADA</button>
+            <div class="flex bg-slate-200 p-1.5 rounded-2xl gap-1">
+                <button onclick="window.switchAdminTab('patio')" class="adm-btn active flex-1 py-3 rounded-xl text-[10px] font-black uppercase text-indigo-600 bg-white shadow-sm">Pátio</button>
+                <button onclick="window.switchAdminTab('prices')" class="adm-btn flex-1 py-3 rounded-xl text-[10px] font-black uppercase text-slate-500">Preços</button>
             </div>
 
-            <div id="adm-active-list" class="space-y-4"></div>
+            <!-- TAB PÁTIO -->
+            <div id="adm-patio" class="adm-module space-y-4">
+                <div class="card p-6 border-l-8 border-indigo-600 space-y-4">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Entrada de Veículo</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="adm-plate" placeholder="PLACA" class="font-black uppercase">
+                        <input type="text" id="adm-model" placeholder="MODELO">
+                    </div>
+                    <select id="adm-service-select" class="font-bold text-xs"></select>
+                    <button onclick="window.addVehicle()" class="w-full btn-primary py-4">REGISTRAR ENTRADA</button>
+                </div>
+                <div id="adm-active-list" class="space-y-4"></div>
+            </div>
+
+            <!-- TAB CONFIG PREÇOS -->
+            <div id="adm-prices" class="adm-module hidden space-y-4">
+                <div class="card p-6 space-y-4">
+                    <h4 class="text-xs font-black uppercase text-slate-400">Gerenciar Serviços</h4>
+                    <div id="adm-service-editor" class="space-y-3"></div>
+                    <button onclick="window.addNewService()" class="w-full py-3 bg-slate-800 text-white rounded-xl text-xs font-bold uppercase">+ Novo Serviço</button>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <!-- DOCK NAVIGATION -->
-    <nav class="fixed bottom-0 left-0 right-0 h-20 glass-nav flex justify-around items-center px-4">
-        <button onclick="window.switchScreen('home')" class="dock-item dock-active flex flex-col items-center gap-1">
+    <!-- Navigation -->
+    <nav class="fixed bottom-6 left-6 right-6 h-20 glass rounded-[2rem] shadow-2xl z-[100] flex justify-around items-center px-4">
+        <button onclick="window.switchScreen('home')" class="nav-item active flex flex-col items-center gap-1 transition-all">
             <i data-lucide="home" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase">Início</span>
         </button>
-        <button onclick="window.switchScreen('track')" class="dock-item text-slate-300 flex flex-col items-center gap-1">
+        <button onclick="window.switchScreen('prices')" class="nav-item text-slate-300 flex flex-col items-center gap-1">
+            <i data-lucide="list-checks" class="w-6 h-6"></i>
+        </button>
+        <button onclick="window.switchScreen('track')" class="nav-item text-slate-300 flex flex-col items-center gap-1">
             <i data-lucide="search" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase">Rastrear</span>
         </button>
-        <button onclick="window.switchScreen('admin')" id="nav-admin" class="dock-item text-slate-300 flex flex-col items-center gap-1 opacity-20 pointer-events-none">
-            <i data-lucide="settings" class="w-6 h-6"></i>
-            <span class="text-[9px] font-bold uppercase">Painel</span>
+        <button onclick="window.switchScreen('about')" class="nav-item text-slate-300 flex flex-col items-center gap-1">
+            <i data-lucide="info" class="w-6 h-6"></i>
         </button>
     </nav>
 
@@ -153,7 +191,7 @@
 
         // CONFIGURAÇÃO DO FIREBASE (Importante: Use as suas chaves aqui)
         const firebaseConfig = {
-            apiKey: "AIzaSyB...",
+            apiKey: "COLE_AQUI_SUA_API_KEY",
             authDomain: "acazis-os.firebaseapp.com",
             databaseURL: "https://acazis-os-default-rtdb.firebaseio.com",
             projectId: "acazis-os",
@@ -165,55 +203,54 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Estado Local
         let state = {
             vehicles: {},
-            services: {
-                "s1": { name: 'Lavagem Simples', price: 35 },
-                "s2": { name: 'Lavagem Completa', price: 60 },
-                "s3": { name: 'Ducha Rápida', price: 20 }
-            },
+            services: {},
             history: {},
             isAdmin: false
         };
 
         // --- FUNÇÕES GLOBAIS ---
         window.switchScreen = (id) => {
-            if(id === 'admin' && !state.isAdmin) return window.handleAdminAuth();
-            
+            if(id === 'admin' && !state.isAdmin) return window.checkAdmin();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('scr-' + id).classList.add('active');
             
-            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('dock-active', 'text-[#003399]'));
-            document.querySelectorAll('.dock-item').forEach(d => d.classList.add('text-slate-300'));
-            
-            const activeBtn = document.querySelector(`[onclick*="switchScreen('${id}')"]`);
-            if(activeBtn) {
-                activeBtn.classList.add('dock-active', 'text-[#003399]');
-                activeBtn.classList.remove('text-slate-300');
-            }
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active', 'text-indigo-600'));
+            const btn = document.querySelector(`[onclick="window.switchScreen('${id}')"]`);
+            if(btn) btn.classList.add('active');
+            lucide.createIcons();
+            window.scrollTo(0,0);
+        };
+
+        window.switchAdminTab = (tab) => {
+            document.querySelectorAll('.adm-module').forEach(m => m.classList.add('hidden'));
+            document.getElementById('adm-' + tab).classList.remove('hidden');
+            document.querySelectorAll('.adm-btn').forEach(b => {
+                b.classList.remove('active', 'bg-white', 'shadow-sm', 'text-indigo-600');
+                b.classList.add('text-slate-500');
+            });
+            event.currentTarget.classList.add('active', 'bg-white', 'shadow-sm', 'text-indigo-600');
             lucide.createIcons();
         };
 
-        window.handleAdminAuth = async () => {
+        window.checkAdmin = async () => {
             const { value: pass } = await Swal.fire({
-                title: 'Acesso Restrito',
+                title: 'Acesso Admin',
                 input: 'password',
-                confirmButtonColor: '#003399',
-                inputPlaceholder: 'Senha Administrativa'
+                confirmButtonColor: '#4f46e5',
+                inputPlaceholder: 'Senha'
             });
             if(pass === '1234321') {
                 state.isAdmin = true;
-                document.getElementById('nav-admin').classList.remove('opacity-20', 'pointer-events-none');
                 window.switchScreen('admin');
             } else if(pass) {
-                Swal.fire('Erro', 'Senha Inválida', 'error');
+                Swal.fire('Erro', 'Senha incorreta', 'error');
             }
         };
 
         window.logoutAdmin = () => {
             state.isAdmin = false;
-            document.getElementById('nav-admin').classList.add('opacity-20', 'pointer-events-none');
             window.switchScreen('home');
         };
 
@@ -222,18 +259,21 @@
             const data = snapshot.val();
             if(data) {
                 state.vehicles = data.vehicles || {};
+                state.services = data.services || {
+                    "default": { name: "Lavagem Simples", price: 35 }
+                };
                 state.history = data.history || {};
                 renderAll();
             }
         });
 
         window.addVehicle = () => {
-            const plate = document.getElementById('in-plate').value.trim().toUpperCase();
-            const model = document.getElementById('in-model').value.trim();
-            const serviceKey = document.getElementById('in-service-select').value;
+            const plate = document.getElementById('adm-plate').value.trim().toUpperCase();
+            const model = document.getElementById('adm-model').value.trim();
+            const serviceKey = document.getElementById('adm-service-select').value;
             const service = state.services[serviceKey];
 
-            if(!plate || !model) return Swal.fire('Erro', 'Preencha todos os dados', 'warning');
+            if(!plate || !model) return;
 
             const code = "ACZ-" + Math.floor(100 + Math.random() * 899);
             const entry = {
@@ -245,9 +285,8 @@
             };
 
             push(ref(db, 'acazis_os/vehicles'), entry);
-            document.getElementById('in-plate').value = '';
-            document.getElementById('in-model').value = '';
-            Swal.fire('Ticket Gerado', `Entrada registrada: ${code}`, 'success');
+            document.getElementById('adm-plate').value = '';
+            document.getElementById('adm-model').value = '';
         };
 
         window.updateStatus = (key, s) => {
@@ -257,8 +296,9 @@
         window.checkout = (key) => {
             const v = state.vehicles[key];
             Swal.fire({
-                title: 'Finalizar Atendimento',
-                html: `Veículo: ${v.plate}<br><b>Total: R$ ${v.price.toFixed(2)}</b>`,
+                title: 'Finalizar Saída?',
+                text: `Valor: R$ ${v.price.toFixed(2)}`,
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Confirmar Pagamento',
                 confirmButtonColor: '#10b981'
@@ -266,9 +306,24 @@
                 if(res.isConfirmed) {
                     push(ref(db, 'acazis_os/history'), {...v, exitTime: new Date().getTime()});
                     remove(ref(db, `acazis_os/vehicles/${key}`));
-                    Swal.fire('Pago!', 'O recibo foi gerado.', 'success');
                 }
             });
+        };
+
+        window.addNewService = async () => {
+            const { value: formValues } = await Swal.fire({
+                title: 'Novo Serviço',
+                html: '<input id="sw-n" class="swal2-input" placeholder="Nome">' +
+                      '<input id="sw-p" type="number" class="swal2-input" placeholder="Preço">',
+                preConfirm: () => [document.getElementById('sw-n').value, document.getElementById('sw-p').value]
+            });
+            if (formValues && formValues[0]) {
+                push(ref(db, 'acazis_os/services'), { name: formValues[0], price: parseFloat(formValues[1]) });
+            }
+        };
+
+        window.deleteService = (key) => {
+            remove(ref(db, `acazis_os/services/${key}`));
         };
 
         window.trackCar = () => {
@@ -278,21 +333,21 @@
 
             const resDiv = document.getElementById('track-result');
             if(!found) {
-                resDiv.innerHTML = `<div class="card-premium p-10 text-center text-slate-300 font-bold uppercase text-xs">Ticket não localizado</div>`;
+                resDiv.innerHTML = `<div class="card p-10 text-center text-slate-400 font-bold uppercase text-xs">Ticket não localizado</div>`;
                 return;
             }
 
             resDiv.innerHTML = `
-                <div class="card-premium p-6 border-t-8 border-[#003399] animate-slideIn">
+                <div class="card p-6 border-t-8 border-indigo-600 animate-slideUp">
                     <div class="flex justify-between items-start mb-6">
                         <div>
                             <h4 class="text-xl font-black text-slate-800">${found.model}</h4>
-                            <p class="text-[#003399] font-bold uppercase text-[10px] tracking-widest">${found.plate}</p>
+                            <p class="text-indigo-600 font-bold uppercase text-[10px] tracking-widest">${found.plate}</p>
                         </div>
-                        <span class="bg-blue-50 text-[#003399] px-3 py-1 rounded-full text-[10px] font-black uppercase">${found.status}</span>
+                        <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">${found.status}</span>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-2xl flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400">Total a Pagar:</span>
+                        <span class="text-xs font-bold text-slate-400">Total:</span>
                         <span class="text-lg font-black text-slate-800">R$ ${found.price.toFixed(2)}</span>
                     </div>
                 </div>
@@ -303,7 +358,7 @@
         // --- RENDERS ---
         function renderAll() {
             renderPatio();
-            renderSelects();
+            renderServiceLists();
             renderStats();
             lucide.createIcons();
         }
@@ -311,14 +366,14 @@
         function renderPatio() {
             const list = document.getElementById('adm-active-list');
             list.innerHTML = Object.entries(state.vehicles).map(([key, v]) => `
-                <div class="card-premium p-5 flex justify-between items-center border-l-4 border-[#003399]">
+                <div class="card p-5 flex justify-between items-center border-l-4 border-indigo-600">
                     <div>
-                        <p class="text-[10px] font-black text-[#003399]">${v.code}</p>
+                        <p class="text-[10px] font-black text-indigo-600">${v.code}</p>
                         <h4 class="font-bold text-slate-800">${v.plate}</h4>
                         <p class="text-[10px] text-slate-400 uppercase font-bold">${v.status}</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="window.updateStatus('${key}', 'Lavando')" class="p-2 bg-slate-100 rounded-lg text-slate-400 active:bg-[#003399] active:text-white"><i data-lucide="droplets" class="w-4 h-4"></i></button>
+                        <button onclick="window.updateStatus('${key}', 'Lavando')" class="p-2 bg-slate-100 rounded-lg text-slate-400 active:bg-indigo-600 active:text-white"><i data-lucide="droplets" class="w-4 h-4"></i></button>
                         <button onclick="window.updateStatus('${key}', 'Pronto')" class="p-2 bg-slate-100 rounded-lg text-slate-400 active:bg-green-500 active:text-white"><i data-lucide="check" class="w-4 h-4"></i></button>
                         <button onclick="window.checkout('${key}')" class="p-2 bg-slate-900 text-white rounded-lg"><i data-lucide="log-out" class="w-4 h-4"></i></button>
                     </div>
@@ -326,23 +381,43 @@
             `).join('');
         }
 
-        function renderSelects() {
-            const select = document.getElementById('in-service-select');
-            select.innerHTML = Object.entries(state.services).map(([key, s]) => `
-                <option value="${key}">${s.name} - R$ ${s.price.toFixed(2)}</option>
+        function renderServiceLists() {
+            const clientList = document.getElementById('client-service-list');
+            const adminEditor = document.getElementById('adm-service-editor');
+            const adminSelect = document.getElementById('adm-service-select');
+
+            const services = Object.entries(state.services).map(([key, s]) => ({key, ...s}));
+
+            clientList.innerHTML = services.map(s => `
+                <div class="card p-5 flex justify-between items-center">
+                    <div>
+                        <span class="font-bold text-slate-700 block">${s.name}</span>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase">Serviço Premium</span>
+                    </div>
+                    <span class="font-black text-indigo-600">R$ ${s.price.toFixed(2)}</span>
+                </div>
             `).join('');
+
+            adminEditor.innerHTML = services.map(s => `
+                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl">
+                    <span class="text-xs font-bold">${s.name}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-black text-indigo-600">R$ ${s.price}</span>
+                        <button onclick="window.deleteService('${s.key}')" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            adminSelect.innerHTML = services.map(s => `<option value="${s.key}">${s.name} (R$ ${s.price})</option>`).join('');
         }
 
         function renderStats() {
-            document.getElementById('adm-active-count').innerText = Object.keys(state.vehicles).length;
+            document.getElementById('adm-count').innerText = Object.keys(state.vehicles).length;
             const rev = Object.values(state.history).reduce((acc, curr) => acc + curr.price, 0);
-            document.getElementById('adm-total-cash').innerText = `R$ ${rev.toFixed(2)}`;
+            document.getElementById('adm-cash').innerText = `R$ ${rev.toFixed(2)}`;
         }
 
-        window.onload = () => {
-            init(); // For lucide
-            renderAll();
-        };
+        window.onload = () => lucide.createIcons();
     </script>
 </body>
-</html>
+    </html>
